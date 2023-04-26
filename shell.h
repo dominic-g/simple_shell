@@ -15,7 +15,7 @@ extern char **environ;
 /*functions declarations*/
 void prompt(void);
 void parse_command(char *cmd, char **args);
-int main(void);
+int main(int argc, char **argv);
 
 /*Extra File */
 char *my_getline_(void);
@@ -31,8 +31,9 @@ char *_strdup(const char *str);
 int _atoi(char *c);
 
 /*Execute*/
-int search_command(char **args);
-int execute_command(char **args);
+int search_command(char **args, char *command);
+int execute_command(char **args, int interactive_mode);
+void check_path(char *path_copy);
 int handle_env(void);
 int handle_exit(char **args);
 

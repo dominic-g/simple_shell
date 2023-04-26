@@ -30,33 +30,50 @@ env++;
 }
 return (1);
 }
-
 /**
-* search_command - Execute a command.
-* @args: An array of arguments.
+* check_path - Env.
 *
-* Return: 1 if 0 if it should exit.
+* @path_copy: The command string to be parsed.
+* Return: void.
 */
-int search_command(char **args)
+void check_path(char *path_copy)
 {
-int found = 0;
-char *path = getenv("PATH");
-char *curr_dir, *path_copy;
-char command[MAX_CMD_LEN];
-
-if (path == NULL)
-{
-fprintf(stderr, "Could not get PATH environment variable\n");
-return (0);
-}
-
-path_copy = _strdup(path);
 if (path_copy == NULL)
 {
 perror("strdup");
 exit(1);
 }
+}
 
+/**
+* search_command - Execute a command.
+* @args: An array of arguments.
+* @command: The command string to be parsed.
+*
+* Return: 1 if 0 if it should exit.
+*/
+int search_command(char **args, char *command)
+{
+int found = 0;
+if (args[0][0] == '/')
+{
+if (access(args[0], F_OK) == 0)
+{
+found = 1;
+strncpy(command, args[0], MAX_CMD_LEN);
+}
+}
+else
+{
+char *path = getenv("PATH");
+char *curr_dir, *path_copy;
+if (path == NULL)
+{
+fprintf(stderr, "Could not get PATH environment variable\n");
+return (0);
+}
+path_copy = _strdup(path);
+check_path(path_copy);
 while ((curr_dir = _strtok(path_copy, ":")) != NULL)
 {
 snprintf(command, MAX_CMD_LEN, "%s/%s", curr_dir, args[0]);
@@ -67,39 +84,35 @@ break;
 }
 path_copy = NULL;
 }
-
 free(path_copy);
-
+}
 if (!found)
 {
 perror(args[0]);
 return (1);
 }
 return (0);
-
 }
+
 
 /**
 * execute_command - Execute a command.
 * @args: An array of arguments.
+* @interactive_mode: The command string to be parsed.
 *
 * Return: 1 if the shell should continue running, 0 if it should exit.
 */
-int execute_command(char **args)
+int execute_command(char **args, int interactive_mode)
 {
 int status;
 pid_t pid;
 char command[MAX_CMD_LEN];
-
 if (_strcmp(args[0], "exit") == 0)
 return (handle_exit(args));
-
 if (_strcmp(args[0], "env") == 0)
 return (handle_env());
-
-if (search_command(args) != 0)
+if (search_command(args, command) != 0)
 return (1);
-
 pid = fork();
 if (pid == -1)
 {
@@ -124,5 +137,7 @@ exit(1);
 if (WIFEXITED(status) && WEXITSTATUS(status) == 0)
 return (1);
 }
-return (1);
+if (interactive_mode)
+prompt();
+return (0);
 }
