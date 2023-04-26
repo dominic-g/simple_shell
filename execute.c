@@ -95,7 +95,7 @@ if (_strcmp(args[0], "exit") == 0)
 return (handle_exit(args));
 
 if (_strcmp(args[0], "env") == 0)
-return (handle_env(args));
+return (handle_env());
 
 if (search_command(args) != 0)
 return (1);
