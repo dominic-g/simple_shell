@@ -7,7 +7,7 @@ extern char **environ;
 void prompt(void);
 char *read_command(void);
 void parse_command(char *cmd, char **args);
-void execute_command(char** args);
+int execute_command(char** args);
 int main(void);
 
 #endif

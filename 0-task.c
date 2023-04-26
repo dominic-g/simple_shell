@@ -5,13 +5,6 @@
 #include <sys/wait.h>
 #include "shell.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <sys/wait.h>
-#include "shell.h"
-
 #define MAX_CMD_LEN 1024
 
 /**
@@ -70,10 +63,41 @@ void parse_command(char *cmd, char **args)
  *
  * Return: 1 if the shell should continue running, 0 if it should exit.
  */
-void execute_command(char **args)
+int execute_command(char **args)
 {
     int status;
-    pid_t pid = fork();
+    pid_t pid;
+    char *path = getenv("PATH");
+    char *curr_dir;
+    char command[MAX_CMD_LEN];
+    int found = 0;
+
+    if (strcmp(args[0], "exit") == 0)
+        return 0;
+
+    if (path == NULL)
+    {
+        fprintf(stderr, "Could not get PATH environment variable\n");
+        return 0;
+    }
+    while ((curr_dir = strtok(path, ":")) != NULL)
+    {
+        snprintf(command, MAX_CMD_LEN, "%s/%s", curr_dir, args[0]);
+        if (access(command, F_OK) == 0)
+        {
+            found = 1;
+            break;
+        }
+        path = NULL;
+    }
+
+    if (!found)
+    {
+        perror(args[0]);
+        return 1;
+    }
+
+    pid = fork();
     if (pid == -1)
     {
         perror("fork");
@@ -82,26 +106,6 @@ void execute_command(char **args)
     else if (pid == 0)
     {
         /* Child process */
-        char *path;
-        char *dir;
-        char command[MAX_CMD_LEN];
-        int found = 0;
-        path = getenv("PATH");
-        while ((dir = strtok(path, ":")) != NULL)
-        {
-            path = NULL;
-            sprintf(command, "%s/%s", dir, args[0]);
-            if (access(command, F_OK) == 0)
-            {
-                found = 1;
-                break;
-            }
-        }
-        if (!found)
-        {
-            fprintf(stderr, "%s: %s: command not found\n", args[0], args[0]);
-            exit(127);
-        }
         if (execve(command, args, environ) == -1)
         {
             perror(args[0]);
@@ -117,15 +121,22 @@ void execute_command(char **args)
             exit(1);
         }
         if (WIFEXITED(status) && WEXITSTATUS(status) == 0)
-            return;
+            return 1;
         else if (WIFEXITED(status))
-            fprintf(stderr, "%s: %s: exit status %d\n", args[0], args[0], WEXITSTATUS(status));
+            fprintf(stderr, "%s: exit status %d\n", args[0], WEXITSTATUS(status));
         else if (WIFSIGNALED(status))
-            fprintf(stderr, "%s: %s: terminated by signal %d\n", args[0], args[0], WTERMSIG(status));
+            fprintf(stderr, "%s: terminated by signal %d\n", args[0], WTERMSIG(status));
     }
+    return 1;
 }
 
 
+
+/**
+ * main - Entry point of the simple shell
+ *
+ * Return: Always 0 on success
+ */
 /**
  * main - Entry point of the simple shell
  *
@@ -135,13 +146,23 @@ int main(void)
 {
     char *cmd;
     char *args[MAX_CMD_LEN];
+    int exit_shell = 0;
 
-    while (1)
+    while (!exit_shell)
     {
         prompt();
         cmd = read_command();
         parse_command(cmd, args);
-        execute_command(args);
+
+        if (strcmp(args[0], "exit") == 0)
+        {
+            exit_shell = 1;
+        }
+        else
+        {
+            execute_command(args);
+        }
+
         free(cmd);
     }
 
