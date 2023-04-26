@@ -80,6 +80,18 @@ int execute_command(char **args)
         fprintf(stderr, "Could not get PATH environment variable\n");
         return 0;
     }
+
+    if (strcmp(args[0], "env") == 0)
+    {
+        char **env = environ;
+        while (*env)
+        {
+            printf("%s\n", *env);
+            env++;
+        }
+        return 1;
+    }
+
     while ((curr_dir = strtok(path, ":")) != NULL)
     {
         snprintf(command, MAX_CMD_LEN, "%s/%s", curr_dir, args[0]);
