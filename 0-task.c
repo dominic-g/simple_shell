@@ -1,8 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <sys/wait.h>
 #include "shell.h"
 
 #define MAX_CMD_LEN 1024
@@ -142,19 +137,12 @@ int execute_command(char **args)
     return 1;
 }
 
-
-
 /**
  * main - Entry point of the simple shell
  *
  * Return: Always 0 on success
  */
-/**
- * main - Entry point of the simple shell
- *
- * Return: Always 0 on success
- */
-int main(void)
+/*int main(void)
 {
     char *cmd;
     char *args[MAX_CMD_LEN];
@@ -163,7 +151,11 @@ int main(void)
     while (!exit_shell)
     {
         prompt();
-        cmd = read_command();
+        cmd = my_getline();
+        if (cmd == NULL) {
+            printf("\n");
+            exit(0);
+        }
         parse_command(cmd, args);
 
         if (strcmp(args[0], "exit") == 0)
@@ -179,4 +171,25 @@ int main(void)
     }
 
     return (0);
+}*/
+int main(void)
+{
+    char *cmd;
+    char *args[MAX_CMD_LEN];
+
+    while (1)
+    {
+        prompt();
+        cmd = read_command();
+        if (cmd == NULL) {
+            printf("\n");
+            exit(0);
+        }
+        parse_command(cmd, args);
+        execute_command(args);
+        free(cmd);
+    }
+
+    return (0);
 }
+
