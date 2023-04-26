@@ -1,12 +1,13 @@
 #include "shell.h"
 /**
 * handle_exit - Handles exit of execute function
-*
+* @args: handle_exit function argument
 * Return: The the exit command.
 */
 int handle_exit(char **args)
 {
-if (args[1] != NULL){
+if (args[1] != NULL)
+{
 printf("%d\n", _atoi(args[1]));
 exit(_atoi(args[1]));
 }
@@ -19,7 +20,7 @@ exit(0);
 *
 * Return: 1, 0 if it should exit.
 */
-int handle_env()
+int handle_env(void)
 {
 char **env = environ;
 while (*env)
@@ -27,7 +28,7 @@ while (*env)
 printf("%s\n", *env);
 env++;
 }
-return 1;
+return (1);
 }
 
 /**
@@ -46,7 +47,7 @@ char command[MAX_CMD_LEN];
 if (path == NULL)
 {
 fprintf(stderr, "Could not get PATH environment variable\n");
-return 0;
+return (0);
 }
 
 path_copy = _strdup(path);
@@ -72,9 +73,9 @@ free(path_copy);
 if (!found)
 {
 perror(args[0]);
-return 1;
+return (1);
 }
-return 0;
+return (0);
 
 }
 
@@ -91,13 +92,13 @@ pid_t pid;
 char command[MAX_CMD_LEN];
 
 if (_strcmp(args[0], "exit") == 0)
-return handle_exit(args);
+return (handle_exit(args));
 
 if (_strcmp(args[0], "env") == 0)
-return handle_env(args);
+return (handle_env(args));
 
 if (search_command(args) != 0)
-return 1;
+return (1);
 
 pid = fork();
 if (pid == -1)
@@ -121,7 +122,7 @@ perror("wait");
 exit(1);
 }
 if (WIFEXITED(status) && WEXITSTATUS(status) == 0)
-return 1;
+return (1);
 }
-return 1;
+return (1);
 }
