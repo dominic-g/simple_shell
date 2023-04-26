@@ -4,6 +4,8 @@
 #include <unistd.h>
 #include <sys/wait.h>
 
+#define MAX_CMD_LEN 1024
+
 #ifndef SHELL_H
 #define SHELL_H
 
@@ -11,11 +13,15 @@ extern char **environ;
 
 /*functions declarations*/
 void prompt(void);
+char *read_command(void);
 void parse_command(char *cmd, char **args);
 int execute_command(char** args);
 int main(void);
 
 /*Extra File */
-char *my_getline(void);
+char *my_getline_(void);
+
+/*Strings*/
+char *_strtok(char *str, const char *delim);
 
 #endif

@@ -1,6 +1,5 @@
 #include "shell.h"
 
-#define MAX_CMD_LEN 1024
 
 /**
  * prompt - Displays the prompt symbol to indicate
@@ -10,7 +9,6 @@ void prompt(void)
 {
     printf("$ ");
 }
-
 
 /**
  * parse_command - Takes a command string as input
@@ -24,11 +22,11 @@ void parse_command(char *cmd, char **args)
 {
     char *arg;
     int i = 0;
-    arg = strtok(cmd, " \t\n");
+    arg = _strtok(cmd, " \t\n");
     while (arg != NULL)
     {
         args[i++] = arg;
-        arg = strtok(NULL, " \t\n");
+        arg = _strtok(NULL, " \t\n");
     }
     args[i] = NULL;
 }
@@ -44,7 +42,7 @@ int execute_command(char **args)
     int status;
     pid_t pid;
     char *path = getenv("PATH");
-    char *curr_dir;
+    char *curr_dir, *path_copy;
     char command[MAX_CMD_LEN];
     int found = 0;
 
@@ -68,7 +66,14 @@ int execute_command(char **args)
         return 1;
     }
 
-    while ((curr_dir = strtok(path, ":")) != NULL)
+    path_copy = strdup(path);
+    if (path_copy == NULL)
+    {
+        perror("strdup");
+        exit(1);
+    }
+
+    while ((curr_dir = _strtok(path_copy, ":")) != NULL)
     {
         snprintf(command, MAX_CMD_LEN, "%s/%s", curr_dir, args[0]);
         if (access(command, F_OK) == 0)
@@ -76,8 +81,10 @@ int execute_command(char **args)
             found = 1;
             break;
         }
-        path = NULL;
+        path_copy = NULL;
     }
+
+    free(path_copy);
 
     if (!found)
     {
@@ -110,13 +117,14 @@ int execute_command(char **args)
         }
         if (WIFEXITED(status) && WEXITSTATUS(status) == 0)
             return 1;
-        else if (WIFEXITED(status))
+        /*else if (WIFEXITED(status))
             fprintf(stderr, "%s: exit status %d\n", args[0], WEXITSTATUS(status));
         else if (WIFSIGNALED(status))
-            fprintf(stderr, "%s: terminated by signal %d\n", args[0], WTERMSIG(status));
+            fprintf(stderr, "%s: terminated by signal %d\n", args[0], WTERMSIG(status));*/
     }
     return 1;
 }
+
 
 /**
  * main - Entry point of the simple shell
@@ -127,17 +135,18 @@ int main(void)
 {
     char *cmd;
     char *args[MAX_CMD_LEN];
+    int run;
+    run = 1;
 
-    while (1)
+    while (run)
     {
         prompt();
-        cmd = read_command();
-        if (cmd == NULL) {
-            printf("\n");
-            exit(0);
+        cmd = my_getline_();
+        if (cmd != NULL) {
+            parse_command(cmd, args);
+
+            run = execute_command(args);
         }
-        parse_command(cmd, args);
-        execute_command(args);
         free(cmd);
     }
 
