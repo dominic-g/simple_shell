@@ -15,7 +15,7 @@ extern char **environ;
 /*functions declarations*/
 void prompt(void);
 void parse_command(char *cmd, char **args);
-int main(int argc, char **argv);
+int main(void);
 
 /*Extra File */
 char *my_getline_(void);
