@@ -21,6 +21,6 @@ char *my_getline_(void)
     {
         return NULL;
     }
-    cmd[strcspn(cmd, "\n")] = '\0';
-    return strdup(cmd);
+    cmd[_strcspn(cmd, "\n")] = '\0';
+    return _strdup(cmd);
 }
