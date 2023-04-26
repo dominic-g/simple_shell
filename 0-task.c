@@ -54,7 +54,7 @@ cmd = my_getline_();
 if (cmd != NULL)
 {
 parse_command(cmd, args);
-run = execute_command(args, interactive_mode);
+run = execute_command(args, interactive_mode) && interactive_mode;
 }
 free(cmd);
 }
