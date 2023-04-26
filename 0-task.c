@@ -35,17 +35,22 @@ args[i] = NULL;
 /**
 * main - Entry point of the simple shell
 *
+* @argc: The commands number.
+* @argv: An array to store the parsed words.
+*
 * Return: Always 0 on success
 */
-int main(void)
+int main(int argc, char *argv[])
 {
 char *cmd;
+char *name;
 char *args[MAX_CMD_LEN];
 int run, interactive_mode;
+interactive_mode = argc;
 
 interactive_mode = isatty(STDIN_FILENO);
 run = 1;
-
+name = argv[0];
 while (run)
 {
 if (interactive_mode)
@@ -54,7 +59,7 @@ cmd = my_getline_();
 if (cmd != NULL)
 {
 parse_command(cmd, args);
-run = execute_command(args, interactive_mode) && interactive_mode;
+run = execute_command(args, interactive_mode, name) && interactive_mode;
 }
 free(cmd);
 }

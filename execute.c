@@ -49,10 +49,11 @@ exit(1);
 * search_command - Execute a command.
 * @args: An array of arguments.
 * @command: The command string to be parsed.
+* @name: The command named called.
 *
 * Return: 1 if 0 if it should exit.
 */
-int search_command(char **args, char *command)
+int search_command(char **args, char *command, char *name)
 {
 int found = 0;
 if (args[0][0] == '/')
@@ -88,7 +89,7 @@ free(path_copy);
 }
 if (!found)
 {
-perror(args[0]);
+perror(name);
 return (1);
 }
 return (0);
@@ -99,10 +100,11 @@ return (0);
 * execute_command - Execute a command.
 * @args: An array of arguments.
 * @interactive_mode: The command string to be parsed.
+* @name: The command named called.
 *
 * Return: 1 if the shell should continue running, 0 if it should exit.
 */
-int execute_command(char **args, int interactive_mode)
+int execute_command(char **args, int interactive_mode, char *name)
 {
 int status;
 pid_t pid;
@@ -111,7 +113,7 @@ if (_strcmp(args[0], "exit") == 0)
 return (handle_exit(args));
 if (_strcmp(args[0], "env") == 0)
 return (handle_env());
-if (search_command(args, command) != 0)
+if (search_command(args, command, name) != 0)
 return (1);
 pid = fork();
 if (pid == -1)
