@@ -11,7 +11,6 @@ extern char **environ;
 
 /*functions declarations*/
 void prompt(void);
-char *read_command(void);
 void parse_command(char *cmd, char **args);
 int execute_command(char** args);
 int main(void);
