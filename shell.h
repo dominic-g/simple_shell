@@ -13,7 +13,6 @@ extern char **environ;
 
 /*functions declarations*/
 void prompt(void);
-char *read_command(void);
 void parse_command(char *cmd, char **args);
 int execute_command(char** args);
 int main(void);
@@ -23,5 +22,6 @@ char *my_getline_(void);
 
 /*Strings*/
 char *_strtok(char *str, const char *delim);
+int _strcmp(char *s1, char *s2);
 
 #endif

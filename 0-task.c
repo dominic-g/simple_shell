@@ -46,7 +46,7 @@ int execute_command(char **args)
     char command[MAX_CMD_LEN];
     int found = 0;
 
-    if (strcmp(args[0], "exit") == 0)
+    if (_strcmp(args[0], "exit") == 0)
         return 0;
 
     if (path == NULL)
@@ -55,7 +55,7 @@ int execute_command(char **args)
         return 0;
     }
 
-    if (strcmp(args[0], "env") == 0)
+    if (_strcmp(args[0], "env") == 0)
     {
         char **env = environ;
         while (*env)
