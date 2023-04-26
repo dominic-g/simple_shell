@@ -9,7 +9,25 @@ void prompt(void)
 {
 printf("$ ");
 }
-
+/**
+* read_command - Reads a command from the user's input using fgets() function
+* and returns it as a string. If fgets() returns NULL,
+* it means that the end of the input has been reached
+*  and the program should exit.
+*
+*  Return: The command string entered by the user.
+*/
+char *read_command(void)
+{
+char cmd[MAX_CMD_LEN];
+if (fgets(cmd, MAX_CMD_LEN, stdin) == NULL)
+{
+printf("\n");
+exit(0);
+}
+cmd[strcspn(cmd, "\n")] = '\0';
+return (strdup(cmd));
+}
 /**
 * parse_command - Takes a command string as input
 * and splits it into individual words
