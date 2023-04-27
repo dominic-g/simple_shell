@@ -13,14 +13,16 @@ void prompt(void)
 /**
 * _printfi - Output content
 * that the shell is ready to receive input.
+* @text: just a btw for this comment in the code
 */
 void _printfi(int text)
 {
-	write(STDOUT_FILENO, &text, _strlen(_itoa(text)) );
+	write(STDOUT_FILENO, &text, _strlen(_itoa(text)));
 }
 /**
 * _printfc - Output content
 * that the shell is ready to receive input.
+* @text: the same as the sister up there
 */
 void _printfc(char *text)
 {

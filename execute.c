@@ -8,7 +8,7 @@ int handle_exit(char **args)
 {
 if (args[1] != NULL)
 {
-_printfi( _atoi(args[1]));
+_printfi(_atoi(args[1]));
 exit(_atoi(args[1]));
 }
 else
@@ -25,7 +25,7 @@ int handle_env(void)
 char **env = environ;
 while (*env)
 {
-_printfc( *env);
+_printfc(*env);
 _printfc("\n");
 env++;
 }
