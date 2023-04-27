@@ -116,6 +116,10 @@ if (_strcmp(args[0], "env") == 0)
 return (handle_env());
 if (_strcmp(args[0], "cd") == 0)
 return (handle_cd(args[1]));
+if (_strcmp(args[0], "setenv") == 0)
+return (_setenv(args));
+if (_strcmp(args[0], "unsetenv") == 0)
+return (_unsetenv(args));
 if (search_command(args, command, name) != 0)
 return (1);
 pid = fork();
