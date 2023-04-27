@@ -6,13 +6,27 @@
 */
 int handle_exit(char **args)
 {
-if (args[1] != NULL)
-{
-printf("%d\n", _atoi(args[1]));
-exit(_atoi(args[1]));
-}
-else
-exit(0);
+	unsigned int ustatus;
+	int is_digit;
+	int str_len;
+	int big_number;
+
+	if (args[1] != NULL)
+	{
+		ustatus = _atoi(args[1]);
+		is_digit = _isdigit(args[1]);
+		str_len = _strlen(args[1]);
+		big_number = ustatus > (unsigned int)INT_MAX;
+		if (!is_digit || str_len > 10 || big_number)
+		{
+			exit(2);
+			return (1);
+		}
+		/*datash->status = (ustatus % 256);*/
+		exit (ustatus);
+	}
+	exit(0);
+	return (0);
 }
 
 /**

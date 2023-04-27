@@ -81,6 +81,12 @@ if (interactive_mode)
 cmd = my_getline_(&_eof);
 if (_eof != -1)
 cmd = remove_comment(cmd);
+else
+{
+free(cmd);
+printf("\n");
+exit(0);
+}
 if (check_syntax_error(&data_st, cmd) == 1)
 {
 	free(cmd);
