@@ -7,7 +7,7 @@
 */
 void prompt(void)
 {
-printf("$ ");
+printf("#Simple_Shell$ ");
 }
 
 /**
