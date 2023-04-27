@@ -8,7 +8,7 @@ int handle_exit(char **args)
 {
 if (args[1] != NULL)
 {
-_printfi(_atoi(args[1]));
+printf("%d\n", _atoi(args[1]));
 exit(_atoi(args[1]));
 }
 else
