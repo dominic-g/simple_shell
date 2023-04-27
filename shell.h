@@ -18,7 +18,10 @@ void parse_command(char *cmd, char **args);
 int main(int argc, char *argv[]);
 
 /*Extra File */
-char *my_getline_(void);
+char *my_getline_(int *_eof);
+
+/*Handle File */
+char *remove_comment(char *cmd);
 
 /*Strings*/
 size_t _strcspn(const char *str, const char *search);
@@ -36,5 +39,10 @@ int execute_command(char **args, int interactive_mode, char *name);
 void check_path(char *path_copy);
 int handle_env(void);
 int handle_exit(char **args);
+
+/* mem.c */
+void _memcpy(void *newptr, const void *ptr, unsigned int size);
+void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
+char **_reallocdp(char **ptr, unsigned int old_size, unsigned int new_size);
 
 #endif

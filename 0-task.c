@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
 char *cmd;
 char *name;
 char *args[MAX_CMD_LEN];
-int run, interactive_mode;
+int run, interactive_mode, _eof;
 interactive_mode = argc;
 
 interactive_mode = isatty(STDIN_FILENO);
@@ -55,7 +55,11 @@ while (run)
 {
 if (interactive_mode)
 prompt();
-cmd = my_getline_();
+cmd = my_getline_(&_eof);
+
+if (_eof != -1)
+cmd = remove_comment(cmd);
+
 if (cmd != NULL)
 {
 parse_command(cmd, args);
