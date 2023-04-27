@@ -56,7 +56,6 @@ char *my_getline_(int *_eof);
 void free_data(data_shell *data_st);
 void set_data(data_shell *data_st, char **av);
 char *_itoa(int n);
-void _printf(char *format, ...);
 
 /*Handle File */
 char *remove_comment(char *cmd);

@@ -25,7 +25,8 @@ int handle_env(void)
 char **env = environ;
 while (*env)
 {
-printf("%s\n", *env);
+_printfc( *env);
+_printfc("\n");
 env++;
 }
 return (1);
