@@ -16,39 +16,28 @@ void execute_command(char **args)
 {
 pid_t pid;
 int status;
-if (strcmp(args[0], "cd") == 0)
-{
-if (chdir(args[1]) == -1)
-{
-perror("chdir failed");
-}
-return;
-}
-if (strcmp(args[0], "exit") == 0)
-{
-exit(EXIT_SUCCESS);
-}
+
 pid = fork();
-if (pid == -1)
-{
-perror("fork failed");
-exit(EXIT_FAILURE);
-}
 if (pid == 0)
 {
-if (access(args[0], X_OK) == -1)
+/* Child process */
+if (execvp(args[0], args) == -1)
 {
-perror("./hsh");
+perror("Error");
+}
 exit(EXIT_FAILURE);
 }
-execve(args[0], args, NULL);
-perror("execve failed");
-exit(EXIT_FAILURE);
-}
-if (waitpid(pid, &status, 0) == -1)
+else if (pid < 0)
 {
-perror("waitpid failed");
-exit(EXIT_FAILURE);
+/* Fork error */
+perror("Error");
+}
+else
+{
+/* Parent process */
+do {
+waitpid(pid, &status, WUNTRACED);
+} while (!WIFEXITED(status) && !WIFSIGNALED(status));
 }
 }
 /**

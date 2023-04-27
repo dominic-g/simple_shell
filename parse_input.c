@@ -12,21 +12,33 @@
  */
 char **parse_input(char *input)
 {
-char *token;
-char **tokens = malloc(sizeof(char *) * 2);
+char **tokens = NULL;
+char *token = NULL;
+int i = 0;
+int token_count = 0;
 
+token = strtok(input, " \t\n");
+while (token)
+{
+token_count++;
+token = strtok(NULL, " \t\n");
+}
+
+tokens = malloc(sizeof(char *) * (token_count + 1));
 if (!tokens)
 {
-perror("malloc failed");
+perror("malloc");
 exit(EXIT_FAILURE);
 }
-token = strtok(input, " \n");
-if (!token)
+
+token = strtok(input, " \t\n");
+while (token)
 {
-free(tokens);
-return (NULL);
+tokens[i] = token;
+i++;
+token = strtok(NULL, " \t\n");
 }
-tokens[0] = token;
-tokens[1] = NULL;
+tokens[i] = NULL;
+
 return (tokens);
 }
