@@ -13,6 +13,7 @@
 #include <limits.h>
 #include <stdarg.h>
 #include <unistd.h>
+#include <string.h>
 
 #define MAX_CMD_LEN 1024
 
@@ -108,10 +109,9 @@ char **_reallocdp(char **ptr, unsigned int old_size, unsigned int new_size);
 
 
 /* cd.c */
-/*void change_dir_dot(data_shell *datash);*/
-/*void change_dir_to(data_shell *datash);*/
-/*void change_dir_to_previous(data_shell *datash);*/
-
+void change_dir_dot(char *args);
+void change_dir_to(char *args);
+void change_dir_to_previous(void);
 void home_directory(void);
 
 /* cd_shell.c */

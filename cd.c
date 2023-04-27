@@ -14,7 +14,6 @@ void home_directory(void)
 	p_pwd = _strdup(pwd);
 
 	home = _getenv("HOME");
-	printf("%s\n", home);
 	if (home == NULL)
 	{
 		set_env("OLDPWD", p_pwd);
@@ -29,11 +28,119 @@ void home_directory(void)
 		return;
 	}
 
-
-	printf("%s\n", p_pwd);
 	set_env("OLDPWD", p_pwd);
 	set_env("PWD", home);
-	printf("%s\n", home);
 	free(p_pwd);
 	/*data->status = 0;*/
+}
+/**
+ * change_dir_to - changes to a directory given
+ * by the user
+ *
+ * @args: file path argument
+ * Return: no return
+ */
+void change_dir_to(char *args)
+{
+	char pwd[PATH_MAX];
+	char *dir, *cp_pwd, *cp_dir;
+
+	getcwd(pwd, sizeof(pwd));
+	dir = args;
+	if (chdir(dir) == -1)
+	{
+		/*get_error(data, 2);*/
+		return;
+	}
+
+	cp_pwd = _strdup(pwd);
+	set_env("OLDPWD", cp_pwd);
+
+	cp_dir = _strdup(dir);
+	set_env("PWD", cp_dir);
+
+	free(cp_pwd);
+	free(cp_dir);
+
+	/*data->status = 0;*/
+
+	chdir(dir);
+}
+/**
+ * change_dir_dot - changes to the parent directory
+ *
+ * @args: file path argument
+ * Return: no return
+ */
+void change_dir_dot(char *args)
+{
+	char pwd[PATH_MAX];
+	char *dir, *cp_pwd, *cp_strtok_pwd;
+
+	getcwd(pwd, sizeof(pwd));
+	cp_pwd = _strdup(pwd);
+	set_env("OLDPWD", cp_pwd);
+	dir = args;
+	if (_strcmp(".", dir) == 0)
+	{
+		set_env("PWD", cp_pwd);
+		free(cp_pwd);
+		return;
+	}
+	if (_strcmp("/", cp_pwd) == 0)
+	{
+		free(cp_pwd);
+		return;
+	}
+	cp_strtok_pwd = cp_pwd;
+	rev_string(cp_strtok_pwd);
+	cp_strtok_pwd = _strtok(cp_strtok_pwd, "/");
+	if (cp_strtok_pwd != NULL)
+	{
+		cp_strtok_pwd = _strtok(NULL, "\0");
+
+		if (cp_strtok_pwd != NULL)
+			rev_string(cp_strtok_pwd);
+	}
+
+	if (cp_strtok_pwd != NULL)
+	{
+		chdir(cp_strtok_pwd);
+		set_env("PWD", cp_strtok_pwd);
+	}
+	else
+	{
+		chdir("/");
+		set_env("PWD", "/");
+	}
+	free(cp_pwd);
+}
+/**
+ * change_dir_to_previous - changes to the previous directory
+ *
+ * Return: no return
+ */
+void change_dir_to_previous(void)
+{
+char pwd[PATH_MAX];
+char *p_pwd, *p_oldpwd, *cp_pwd, *cp_oldpwd;
+getcwd(pwd, sizeof(pwd));
+cp_pwd = _strdup(pwd);
+p_oldpwd = _getenv("OLDPWD");
+if (p_oldpwd == NULL)
+cp_oldpwd = cp_pwd;
+else
+cp_oldpwd = _strdup(p_oldpwd);
+set_env("OLDPWD", cp_pwd);
+if (chdir(cp_oldpwd) == -1)
+set_env("PWD", cp_pwd);
+else
+set_env("PWD", cp_oldpwd);
+p_pwd = _getenv("PWD");
+write(STDOUT_FILENO, p_pwd, _strlen(p_pwd));
+write(STDOUT_FILENO, "\n", 1);
+free(cp_pwd);
+if (p_oldpwd)
+free(cp_oldpwd);
+chdir(p_pwd);
 }

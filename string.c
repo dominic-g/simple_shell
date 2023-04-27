@@ -119,21 +119,16 @@ return (tok);
  */
 int _strcmp(char *s1, char *s2)
 {
-int cmp = 0, i;
+int i;
 
-if (s1 == NULL || s2 == NULL)
+for (i = 0; s1[i] == s2[i] && s1[i]; i++)
+;
+
+if (s1[i] > s2[i])
 return (1);
-for (i = 0; s1[i]; i++)
-{
-if (s1[i] != s2[i])
-{
-cmp = s1[i] - s2[i];
-break;
-}
-else
-continue;
-}
-return (cmp);
+if (s1[i] < s2[i])
+return (-1);
+return (0);
 }
 /**
 * _strdup - duplicates a string in memory
