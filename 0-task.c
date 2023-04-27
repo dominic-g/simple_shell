@@ -7,7 +7,7 @@
 */
 void prompt(void)
 {
-printf("#Simple_Shell$ ");
+	write(STDOUT_FILENO, "#Simple Shell$ ", 15);
 }
 
 /**
@@ -40,25 +40,32 @@ args[i] = NULL;
 *
 * Return: Always 0 on success
 */
-int main(int argc, char *argv[])
+int main(int argc, char **argv)
 {
 char *cmd;
 char *name;
+data_shell data_st;
 char *args[MAX_CMD_LEN];
 int run, interactive_mode, _eof;
-interactive_mode = argc;
+(void) argc;
 
 interactive_mode = isatty(STDIN_FILENO);
 run = 1;
 name = argv[0];
+
+set_data(&data_st, argv);
 while (run)
 {
 if (interactive_mode)
-prompt();
+	prompt();
 cmd = my_getline_(&_eof);
-
 if (_eof != -1)
 cmd = remove_comment(cmd);
+if (check_syntax_error(&data_st, cmd) == 1)
+{
+	free(cmd);
+	continue;
+}
 
 if (cmd != NULL)
 {
@@ -68,6 +75,8 @@ run = execute_command(args, interactive_mode, name) && interactive_mode;
 free(cmd);
 }
 
+free_data(&data_st);
 return (0);
 }
+
 

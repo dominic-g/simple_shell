@@ -61,7 +61,7 @@ if (args[0][0] == '/')
 if (access(args[0], F_OK) == 0)
 {
 found = 1;
-strncpy(command, args[0], MAX_CMD_LEN);
+_strncpy(command, args[0], MAX_CMD_LEN);
 }
 }
 else
@@ -139,7 +139,7 @@ exit(1);
 if (WIFEXITED(status) && WEXITSTATUS(status) == 0)
 return (1);
 }
-if (interactive_mode)
+if (interactive_mode && false)
 prompt();
 return (0);
 }
