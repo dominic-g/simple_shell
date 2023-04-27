@@ -1,72 +1,145 @@
 #include "shell.h"
 /**
- * execute_command - executes a command
- * @args: pointer to command to execute
- *
- * Description:
- * This function executes the specified command. First, it checks
- * if the command is a built-in command (such as "cd" or "exit").
- * If so, it executes the command directly. Otherwise, it searches
- * the PATH environment variable for an executable file with the
- * specified name, and executes the file with any specified arguments.
- *
- * Return: 1 on success, 0 on failure
- */
-void execute_command(char **args)
+* handle_exit - Handles exit of execute function
+* @args: handle_exit function argument
+* Return: The the exit command.
+*/
+int handle_exit(char **args)
 {
-pid_t pid;
-int status;
+if (args[1] != NULL)
+{
+printf("%d\n", _atoi(args[1]));
+exit(_atoi(args[1]));
+}
+else
+exit(0);
+}
 
-pid = fork();
-if (pid == 0)
+/**
+* handle_env - Env.
+*
+* Return: 1, 0 if it should exit.
+*/
+int handle_env(void)
 {
-/* Child process */
-if (execvp(args[0], args) == -1)
+char **env = environ;
+while (*env)
 {
-perror("Error");
+printf("%s\n", *env);
+env++;
 }
-exit(EXIT_FAILURE);
+return (1);
 }
-else if (pid < 0)
+/**
+* check_path - Env.
+*
+* @path_copy: The command string to be parsed.
+* Return: void.
+*/
+void check_path(char *path_copy)
 {
-/* Fork error */
-perror("Error");
+if (path_copy == NULL)
+{
+perror("strdup");
+exit(1);
+}
+}
+
+/**
+* search_command - Execute a command.
+* @args: An array of arguments.
+* @command: The command string to be parsed.
+* @name: The command named called.
+*
+* Return: 1 if 0 if it should exit.
+*/
+int search_command(char **args, char *command, char *name)
+{
+int found = 0;
+if (args[0][0] == '/')
+{
+if (access(args[0], F_OK) == 0)
+{
+found = 1;
+strncpy(command, args[0], MAX_CMD_LEN);
+}
 }
 else
 {
-/* Parent process */
-do {
-waitpid(pid, &status, WUNTRACED);
-} while (!WIFEXITED(status) && !WIFSIGNALED(status));
-}
-}
-/**
- * main - entry point for simple shell program
- *
- * Description:
- * This function is the entry point for the simple shell program.
- * It displays a prompt to the user, reads input from the user,
- * parses the input into tokens, and executes the specified command.
- * This process repeats until the user enters an end-of-file condition
- * (Ctrl-D) or an error occurs.
- *
- * Return: always 0
- */
-int main(void)
+char *path = getenv("PATH");
+char *curr_dir, *path_copy;
+if (path == NULL)
 {
-char *input;
-char **args;
-while (1)
-{
-input = read_input();
-args = parse_input(input);
-if (args)
-{
-execute_command(args);
-free(args);
+fprintf(stderr, "Could not get PATH environment variable\n");
+return (0);
 }
-free(input);
+path_copy = _strdup(path);
+check_path(path_copy);
+while ((curr_dir = _strtok(path_copy, ":")) != NULL)
+{
+snprintf(command, MAX_CMD_LEN, "%s/%s", curr_dir, args[0]);
+if (access(command, F_OK) == 0)
+{
+found = 1;
+break;
+}
+path_copy = NULL;
+}
+free(path_copy);
+}
+if (!found)
+{
+perror(name);
+return (1);
 }
 return (0);
 }
 
+
+/**
+* execute_command - Execute a command.
+* @args: An array of arguments.
+* @interactive_mode: The command string to be parsed.
+* @name: The command named called.
+*
+* Return: 1 if the shell should continue running, 0 if it should exit.
+*/
+int execute_command(char **args, int interactive_mode, char *name)
+{
+int status;
+pid_t pid;
+char command[MAX_CMD_LEN];
+if (_strcmp(args[0], "exit") == 0)
+return (handle_exit(args));
+if (_strcmp(args[0], "env") == 0)
+return (handle_env());
+if (search_command(args, command, name) != 0)
+return (1);
+pid = fork();
+if (pid == -1)
+{
+perror("fork");
+exit(1);
+}
+else if (pid == 0)
+{
+if (execve(command, args, environ) == -1)
+{
+perror(args[0]);
+exit(126);
+}
+}
+else
+{
+if (wait(&status) == -1)
+{
+perror("wait");
+exit(1);
+}
+if (WIFEXITED(status) && WEXITSTATUS(status) == 0)
+return (1);
+}
+if (interactive_mode)
+prompt();
+return (0);
+}
