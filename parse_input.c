@@ -13,27 +13,27 @@
  */
 char **parse_input(char *input)
 {
- char *token;
-    char **tokens = malloc(MAX_TOKENS * sizeof(char *));
-    int i = 0;
+char *token;
+char **tokens = malloc(MAX_TOKENS * sizeof(char *));
+int i = 0;
 
-    if (!tokens)
-    {
-        perror("malloc error");
-        exit(EXIT_FAILURE);
-    }
+if (!tokens)
+{
+perror("malloc error");
+exit(EXIT_FAILURE);
+}
 
-    token = strtok(input, " ");
+token = strtok(input, " ");
 
-    while (token != NULL)
-    {
-        tokens[i] = token;
-        i++;
+while (token != NULL)
+{
+tokens[i] = token;
+i++;
 
-        token = strtok(NULL, " ");
-    }
+token = strtok(NULL, " ");
+}
 
-    tokens[i] = NULL;
+tokens[i] = NULL;
 
-    return tokens;
+return (tokens);
 }
