@@ -114,6 +114,8 @@ if (_strcmp(args[0], "exit") == 0)
 return (handle_exit(args));
 if (_strcmp(args[0], "env") == 0)
 return (handle_env());
+if (_strcmp(args[0], "cd") == 0)
+return (handle_cd(args[1]));
 if (search_command(args, command, name) != 0)
 return (1);
 pid = fork();

@@ -57,6 +57,15 @@ void free_data(data_shell *data_st);
 void set_data(data_shell *data_st, char **av);
 char *_itoa(int n);
 
+/*Environment*/
+int cmp_env_name(const char *ss_alias, const char *p_name);
+char *_getenv(const char *name);
+int _env(void);
+char *copy_info(char *alias, char *a_value);
+int _unsetenv(char **args);
+int _setenv(char **args);
+void set_env(char *alias, char *a_value);
+
 /*Handle File */
 char *remove_comment(char *cmd);
 
@@ -80,6 +89,7 @@ char *_strchr(char *s, char c);
 int _strlen(const char *s);
 int cmp_chars(char str[], const char *delim);
 int _isdigit(const char *s);
+void rev_string(char *s);
 
 /*Tools*/
 int _atoi(char *c);
@@ -95,5 +105,15 @@ int handle_exit(char **args);
 void _memcpy(void *newptr, const void *ptr, unsigned int size);
 void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
 char **_reallocdp(char **ptr, unsigned int old_size, unsigned int new_size);
+
+
+/* cd.c */
+/*void change_dir_dot(data_shell *datash);
+void change_dir_to(data_shell *datash);
+void change_dir_to_previous(data_shell *datash);*/
+void home_directory();
+
+/* cd_shell.c */
+int handle_cd(char *args);
 
 #endif
