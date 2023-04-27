@@ -108,9 +108,10 @@ char **_reallocdp(char **ptr, unsigned int old_size, unsigned int new_size);
 
 
 /* cd.c */
-/*void change_dir_dot(data_shell *datash);
-void change_dir_to(data_shell *datash);
-void change_dir_to_previous(data_shell *datash);*/
+/*void change_dir_dot(data_shell *datash);*/
+/*void change_dir_to(data_shell *datash);*/
+/*void change_dir_to_previous(data_shell *datash);*/
+
 void home_directory(void);
 
 /* cd_shell.c */
