@@ -41,6 +41,8 @@ typedef struct data
 void prompt(void);
 void parse_command(char *cmd, char **args);
 int main(int argc, char *argv[]);
+void _printfi(int text);
+void _printfc(char *text);
 
 /* int.c */
 int get_len(int n);
@@ -51,6 +53,7 @@ int char_to_int(char *s);
 char *my_getline_(int *_eof);
 void free_data(data_shell *data_st);
 void set_data(data_shell *data_st, char **av);
+char *_itoa(int n);
 
 /*Handle File */
 char *remove_comment(char *cmd);

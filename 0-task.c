@@ -11,6 +11,23 @@ void prompt(void)
 }
 
 /**
+* _printfi - Output content
+* that the shell is ready to receive input.
+*/
+void _printfi(int text)
+{
+	write(STDOUT_FILENO, &text, _strlen(_itoa(text)) );
+}
+/**
+* _printfc - Output content
+* that the shell is ready to receive input.
+*/
+void _printfc(char *text)
+{
+	write(STDOUT_FILENO, text, _strlen(text));
+}
+
+/**
 * parse_command - Takes a command string as input
 * and splits it into individual words
 * using the first word as the command and the
