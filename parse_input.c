@@ -1,4 +1,5 @@
 #include "shell.h"
+#define MAX_TOKENS 100
 /**
  * parse_input - parses input into tokens
  * @input: pointer to input buffer
@@ -12,33 +13,27 @@
  */
 char **parse_input(char *input)
 {
-char **tokens = NULL;
-char *token = NULL;
-int i = 0;
-int token_count = 0;
+ char *token;
+    char **tokens = malloc(MAX_TOKENS * sizeof(char *));
+    int i = 0;
 
-token = strtok(input, " \t\n");
-while (token)
-{
-token_count++;
-token = strtok(NULL, " \t\n");
-}
+    if (!tokens)
+    {
+        perror("malloc error");
+        exit(EXIT_FAILURE);
+    }
 
-tokens = malloc(sizeof(char *) * (token_count + 1));
-if (!tokens)
-{
-perror("malloc");
-exit(EXIT_FAILURE);
-}
+    token = strtok(input, " ");
 
-token = strtok(input, " \t\n");
-while (token)
-{
-tokens[i] = token;
-i++;
-token = strtok(NULL, " \t\n");
-}
-tokens[i] = NULL;
+    while (token != NULL)
+    {
+        tokens[i] = token;
+        i++;
 
-return (tokens);
+        token = strtok(NULL, " ");
+    }
+
+    tokens[i] = NULL;
+
+    return tokens;
 }
