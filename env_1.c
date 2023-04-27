@@ -10,49 +10,48 @@
  */
 int cmp_env_name(const char *ss_alias, const char *p_name)
 {
-    int i;
+int i;
 
-    for (i = 0; ss_alias[i] != '='; i++)
-    {
-        if (ss_alias[i] != p_name[i])
-        {
-            return (0);
-        }
-    }
+for (i = 0; ss_alias[i] != '='; i++)
+{
+if (ss_alias[i] != p_name[i])
+{
+return (0);
+}
+}
 
-    return (i + 1);
+return (i + 1);
 }
 
 /**
  * _getenv - get an environment variable
  * @name: name of the environment variable
- * @environ: environment variable
  *
  * Return: value of the environment variable if it is found.
  * Otherwise, returns NULL.
  */
 char *_getenv(const char *name)
 {
-    char *ptr_env;
-    int i, mov;
+char *ptr_env;
+int i, mov;
 
-    /* Initialize ptr_env value */
-    ptr_env = NULL;
-    mov = 0;
-    /* Compare all environment variables */
-    /* environ is declared in the header file */
-    for (i = 0; environ[i]; i++)
-    {
-        /* If name and env are equal */
-        mov = cmp_env_name(environ[i], name);
-        if (mov)
-        {
-            ptr_env = environ[i];
-            break;
-        }
-    }
+/* Initialize ptr_env value */
+ptr_env = NULL;
+mov = 0;
+/* Compare all environment variables */
+/* environ is declared in the header file */
+for (i = 0; environ[i]; i++)
+{
+/* If name and env are equal */
+mov = cmp_env_name(environ[i], name);
+if (mov)
+{
+ptr_env = environ[i];
+break;
+}
+}
 
-    return (ptr_env + mov);
+return (ptr_env + mov);
 }
 
 /**
@@ -62,19 +61,19 @@ char *_getenv(const char *name)
  */
 int _env(void)
 {
-    extern char **environ;
-    int i, j;
 
-    for (i = 0; environ[i]; i++)
-    {
+int i, j;
 
-        for (j = 0; environ[i][j]; j++)
-            ;
+for (i = 0; environ[i]; i++)
+{
 
-        write(STDOUT_FILENO, environ[i], j);
-        write(STDOUT_FILENO, "\n", 1);
-    }
+for (j = 0; environ[i][j]; j++)
+;
 
-    return (1);
+write(STDOUT_FILENO, environ[i], j);
+write(STDOUT_FILENO, "\n", 1);
+}
+
+return (1);
 }
 
