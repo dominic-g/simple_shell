@@ -1,30 +1,29 @@
 #include "shell.h"
 
 /**
- * repeated_char - counts the repetitions of a char
+ * _dup_char - duplications character in a string
  *
- * @input: input string
- * @i: index
- * Return: repetitions
+ * @input: string to check
+ * @j: start index
+ * Return: duplicates
  */
-int repeated_char(char *input, int i)
+int _dup_char(char *input, int j)
 {
 	if (*(input - 1) == *input)
-		return (repeated_char(input - 1, i + 1));
+		return (_dup_char(input - 1, j + 1));
 
-	return (i);
+	return (j);
 }
 
 /**
- * error_sep_op - finds syntax errors
+ * _find_syntax_error - looking for syntax error
  *
- * @input: input string
+ * @input: string to check error
  * @i: index
- * @last: last char read
- * Return: index of error. 0 when there are no
- * errors
+ * @last: end character to end
+ * Return: 0 if no error and index if error
  */
-int error_sep_op(char *input, int i, char last)
+int _find_syntax_error(char *input, int i, char last)
 {
 	int count;
 
@@ -33,7 +32,7 @@ int error_sep_op(char *input, int i, char last)
 		return (0);
 
 	if (*input == ' ' || *input == '\t')
-		return (error_sep_op(input + 1, i + 1, last));
+		return (_find_syntax_error(input + 1, i + 1, last));
 
 	if (*input == ';')
 		if (last == '|' || last == '&' || last == ';')
@@ -46,7 +45,7 @@ int error_sep_op(char *input, int i, char last)
 
 		if (last == '|')
 		{
-			count = repeated_char(input, 0);
+			count = _dup_char(input, 0);
 			if (count == 0 || count > 1)
 				return (i);
 		}
@@ -59,56 +58,59 @@ int error_sep_op(char *input, int i, char last)
 
 		if (last == '&')
 		{
-			count = repeated_char(input, 0);
+			count = _dup_char(input, 0);
 			if (count == 0 || count > 1)
 				return (i);
 		}
 	}
 
-	return (error_sep_op(input + 1, i + 1, *input));
+	return (_find_syntax_error(input + 1, i + 1, *input));
 }
 
 /**
- * first_char - finds index of the first char
+ * _indexchar - get the character index of first in string
  *
- * @input: input string
- * @i: index
- * Return: 1 if there is an error. 0 in other case.
+ * @input: the string to check
+ * @i: where to start
+ * Return: index of char.
  */
-int first_char(char *input, int *i)
+int _indexchar(char *input, int *i)
 {
+	*i = 0;
+    while (input[*i])
+    {
+        if (input[*i] == ' ' || input[*i] == '\t')
+        {
+            *i += 1;
+            continue;
+        }
 
-	for (*i = 0; input[*i]; *i += 1)
-	{
-		if (input[*i] == ' ' || input[*i] == '\t')
-			continue;
+        if (input[*i] == ';' || input[*i] == '|' || input[*i] == '&')
+            return (-1);
 
-		if (input[*i] == ';' || input[*i] == '|' || input[*i] == '&')
-			return (-1);
+        break;
+    }
 
-		break;
-	}
-
-	return (0);
+    return (0);
 }
 
 /**
  * syntax_error - prints when a syntax error is found
  *
- * @datash: data structure
- * @input: input string
- * @i: index of the error
- * @bol: to control msg error
- * Return: no return
+ * @datash: custom structure
+ * @input: string to print error
+ * @i: the position of error
+ * @bool: message error checker
+ * Return: void prints
  */
-void syntax_error(data_shell *datash, char *input, int i, int bol)
+void syntax_error(custom_struct *datash, char *input, int i, int bool)
 {
 	char *msg, *msg2, *msg3, *error, *counter;
 	int length;
 
 	if (input[i] == ';')
 	{
-		if (bol == 0)
+		if (bool == 0)
 			msg = (input[i + 1] == ';' ? ";;" : ";");
 		else
 			msg = (input[i - 1] == ';' ? ";;" : ";");
@@ -146,27 +148,26 @@ void syntax_error(data_shell *datash, char *input, int i, int bol)
 }
 
 /**
- * check_syntax_error - intermediate function to
- * find and print a syntax error
+ * _lookforsynerror - checking the command if there is error
  *
- * @datash: data structure
- * @input: input string
- * Return: 1 if there is an error. 0 in other case
+ * @datash: custom structure
+ * @input: command string to check error
+ * Return: boolean true or flse
  */
-int check_syntax_error(data_shell *datash, char *input)
+int _lookforsynerror(custom_struct *datash, char *input)
 {
 	int begin = 0;
 	int f_char = 0;
 	int i = 0;
 
-	f_char = first_char(input, &begin);
+	f_char = _indexchar(input, &begin);
 	if (f_char == -1)
 	{
 		syntax_error(datash, input, begin, 0);
 		return (1);
 	}
 
-	i = error_sep_op(input + begin, 0, *(input + begin));
+	i = _find_syntax_error(input + begin, 0, *(input + begin));
 	if (i != 0)
 	{
 		syntax_error(datash, input, begin + i, 1);

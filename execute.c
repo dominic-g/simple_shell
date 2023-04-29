@@ -1,166 +1,207 @@
 #include "shell.h"
-/**
-* handle_exit - Handles exit of execute function
-* @args: handle_exit function argument
-* Return: The the exit command.
-*/
-int handle_exit(char **args)
-{
-	unsigned int ustatus;
-	int is_digit;
-	int str_len;
-	int big_number;
 
-	if (args[1] != NULL)
+/**
+ * cmd_exec - executes command lines
+ *
+ * @data: data relevant (args and input)
+ * Return: 1 on success.
+ */
+int cmd_exec(custom_struct *data)
+{
+	pid_t pd;
+	pid_t wpd;
+	int state;
+	int exec;
+	char *dir;
+	(void) wpd;
+
+	exec = check_executable(data);
+	if (exec == -1)
+		return (1);
+	if (exec == 0)
 	{
-		ustatus = _atoi(args[1]);
-		is_digit = _isdigit(args[1]);
-		str_len = _strlen(args[1]);
-		big_number = ustatus > (unsigned int)INT_MAX;
-		if (!is_digit || str_len > 10 || big_number)
-		{
-			exit(2);
+		dir = _which(data->args[0], data->_environ);
+		if (check_error_cmd(dir, data) == 1)
 			return (1);
-		}
-		/*datash->status = (ustatus % 256);*/
-		exit (ustatus);
 	}
-	exit(0);
+
+	pd = fork();
+	if (pd == 0)
+	{
+		if (exec == 0)
+			dir = _which(data->args[0], data->_environ);
+		else
+			dir = data->args[0];
+		execve(dir + exec, data->args, data->_environ);
+	}
+	else if (pd < 0)
+	{
+		perror(data->av[0]);
+		return (1);
+	}
+	else
+	{
+		do {
+			wpd = waitpid(pd, &state, WUNTRACED);
+		} while (!WIFEXITED(state) && !WIFSIGNALED(state));
+	}
+
+	data->status = state / 256;
+	return (1);
+}
+
+
+/**
+ * is_cdir - checks ":" if is in the current directory.
+ * @path: type char pointer char.
+ * @i: type int pointer of index.
+ * Return: 1 if the path is searchable in the cd, 0 otherwise.
+ */
+int is_cdir(char *path, int *i)
+{
+	if (path[*i] == ':')
+		return (1);
+
+	while (path[*i] != ':' && path[*i])
+	{
+		*i += 1;
+	}
+
+	if (path[*i])
+		*i += 1;
+
 	return (0);
 }
 
 /**
-* handle_env - Env.
-*
-* Return: 1, 0 if it should exit.
-*/
-int handle_env(void)
+ * _which - locates a command
+ *
+ * @cmd: command name
+ * @ss_env: environment variable
+ * Return: location of the command.
+ */
+char *_which(char *cmd, char **ss_env)
 {
-char **env = environ;
-while (*env)
-{
-_printfc(*env);
-_printfc("\n");
-env++;
-}
-return (1);
-}
-/**
-* check_path - Env.
-*
-* @path_copy: The command string to be parsed.
-* Return: void.
-*/
-void check_path(char *path_copy)
-{
-if (path_copy == NULL)
-{
-perror("strdup");
-exit(1);
-}
+	char *path, *pointer_path, *token_path, *dir;
+	int len_dir, len_cmd, i;
+	struct stat st;
+
+	path = _getenv("PATH", ss_env);
+	if (path)
+	{
+		pointer_path = _strdup(path);
+		len_cmd = _strlen(cmd);
+		token_path = _strtok(pointer_path, ":");
+		i = 0;
+		while (token_path != NULL)
+		{
+			if (is_cdir(path, &i))
+				if (stat(cmd, &st) == 0)
+					return (cmd);
+			len_dir = _strlen(token_path);
+			dir = malloc(len_dir + len_cmd + 2);
+			_strcpy(dir, token_path);
+			_strcat(dir, "/");
+			_strcat(dir, cmd);
+			_strcat(dir, "\0");
+			if (stat(dir, &st) == 0)
+			{
+				free(pointer_path);
+				return (dir);
+			}
+			free(dir);
+			token_path = _strtok(NULL, ":");
+		}
+		free(pointer_path);
+		if (stat(cmd, &st) == 0)
+			return (cmd);
+		return (NULL);
+	}
+	if (cmd[0] == '/')
+		if (stat(cmd, &st) == 0)
+			return (cmd);
+	return (NULL);
 }
 
 /**
-* search_command - Execute a command.
-* @args: An array of arguments.
-* @command: The command string to be parsed.
-* @name: The command named called.
-*
-* Return: 1 if 0 if it should exit.
-*/
-int search_command(char **args, char *command, char *name)
+ * check_executable - determines if is an executable
+ *
+ * @datash: data structure
+ * Return: 0 if is not an executable, other number if it does
+ */
+int check_executable(custom_struct *datash)
 {
-int found = 0;
-if (args[0][0] == '/')
-{
-if (access(args[0], F_OK) == 0)
-{
-found = 1;
-_strncpy(command, args[0], MAX_CMD_LEN);
-}
-}
-else
-{
-char *path = getenv("PATH");
-char *curr_dir, *path_copy;
-if (path == NULL)
-{
-fprintf(stderr, "Could not get PATH environment variable\n");
-return (0);
-}
-path_copy = _strdup(path);
-check_path(path_copy);
-while ((curr_dir = _strtok(path_copy, ":")) != NULL)
-{
-snprintf(command, MAX_CMD_LEN, "%s/%s", curr_dir, args[0]);
-if (access(command, F_OK) == 0)
-{
-found = 1;
-break;
-}
-path_copy = NULL;
-}
-free(path_copy);
-}
-if (!found)
-{
-perror(name);
-return (1);
-}
-return (0);
-}
+	struct stat st;
+	int i;
+	char *input;
 
+	input = datash->args[0];
+	for (i = 0; input[i]; i++)
+	{
+		if (input[i] == '.')
+		{
+			if (input[i + 1] == '.')
+				return (0);
+			if (input[i + 1] == '/')
+				continue;
+			else
+				break;
+		}
+		else if (input[i] == '/' && i != 0)
+		{
+			if (input[i + 1] == '.')
+				continue;
+			i++;
+			break;
+		}
+		else
+			break;
+	}
+	if (i == 0)
+		return (0);
+
+	if (stat(input + i, &st) == 0)
+	{
+		return (i);
+	}
+	get_error(datash, 127);
+	return (-1);
+}
 
 /**
-* execute_command - Execute a command.
-* @args: An array of arguments.
-* @interactive_mode: The command string to be parsed.
-* @name: The command named called.
-*
-* Return: 1 if the shell should continue running, 0 if it should exit.
-*/
-int execute_command(char **args, int interactive_mode, char *name)
+ * check_error_cmd - verifies if user has permissions to access
+ *
+ * @dir: destination directory
+ * @datash: data structure
+ * Return: 1 if there is an error, 0 if not
+ */
+int check_error_cmd(char *dir, custom_struct *datash)
 {
-int status;
-pid_t pid;
-char command[MAX_CMD_LEN];
-if (_strcmp(args[0], "exit") == 0)
-return (handle_exit(args));
-if (_strcmp(args[0], "env") == 0)
-return (handle_env());
-if (_strcmp(args[0], "cd") == 0)
-return (handle_cd(args[1]));
-if (_strcmp(args[0], "setenv") == 0)
-return (_setenv(args));
-if (_strcmp(args[0], "unsetenv") == 0)
-return (_unsetenv(args));
-if (search_command(args, command, name) != 0)
-return (1);
-pid = fork();
-if (pid == -1)
-{
-perror("fork");
-exit(1);
+	if (dir == NULL)
+	{
+		get_error(datash, 127);
+		return (1);
+	}
+
+	if (_strcmp(datash->args[0], dir) != 0)
+	{
+		if (access(dir, X_OK) == -1)
+		{
+			get_error(datash, 126);
+			free(dir);
+			return (1);
+		}
+		free(dir);
+	}
+	else
+	{
+		if (access(datash->args[0], X_OK) == -1)
+		{
+			get_error(datash, 126);
+			return (1);
+		}
+	}
+
+	return (0);
 }
-else if (pid == 0)
-{
-if (execve(command, args, environ) == -1)
-{
-perror(args[0]);
-exit(126);
-}
-}
-else
-{
-if (wait(&status) == -1)
-{
-perror("wait");
-exit(1);
-}
-if (WIFEXITED(status) && WEXITSTATUS(status) == 0)
-return (1);
-}
-if (interactive_mode && false)
-prompt();
-return (0);
-}
+
