@@ -76,22 +76,22 @@ int _find_syntax_error(char *input, int i, char last)
  */
 int _indexchar(char *input, int *i)
 {
-	*i = 0;
-    while (input[*i])
-    {
-        if (input[*i] == ' ' || input[*i] == '\t')
-        {
-            *i += 1;
-            continue;
-        }
+*i = 0;
+while (input[*i])
+{
+if (input[*i] == ' ' || input[*i] == '\t')
+{
+*i += 1;
+continue;
+}
 
-        if (input[*i] == ';' || input[*i] == '|' || input[*i] == '&')
-            return (-1);
+if (input[*i] == ';' || input[*i] == '|' || input[*i] == '&')
+return (-1);
 
-        break;
-    }
+break;
+}
 
-    return (0);
+return (0);
 }
 
 /**

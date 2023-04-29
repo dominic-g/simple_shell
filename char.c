@@ -47,12 +47,12 @@ char *_interchangechar(char *input, int bool)
 /**
  * _addseparator - adding the sep to the list
  *
- * @hd_sep: head of list in separators
- * @hd_line: head of list in command
+ * @hds: head of list in separators
+ * @hdl: head of list in command
  * @input_str: string to check
  * Return: void
  */
-void _addseparator(custom_sep_ls **hd_sep, custom_line_ls **hd_line, char *input_str)
+void _addseparator(custom_sep_ls **hds, custom_line_ls **hdl, char *input_str)
 {
 	int i;
 	char *line;
@@ -62,11 +62,11 @@ void _addseparator(custom_sep_ls **hd_sep, custom_line_ls **hd_line, char *input
 	for (i = 0; input_str[i]; i++)
 	{
 		if (input_str[i] == ';')
-			_asneend(hd_sep, input_str[i]);
+			_asneend(hds, input_str[i]);
 
 		if (input_str[i] == '|' || input_str[i] == '&')
 		{
-			_asneend(hd_sep, input_str[i]);
+			_asneend(hds, input_str[i]);
 			i++;
 		}
 	}
@@ -74,14 +74,14 @@ void _addseparator(custom_sep_ls **hd_sep, custom_line_ls **hd_line, char *input
 	line = _strtok(input_str, ";|&");
 	do {
 		line = _interchangechar(line, 1);
-		_addendnode(hd_line, line);
+		_addendnode(hdl, line);
 		line = _strtok(NULL, ";|&");
 	} while (line != NULL);
 
 }
 
 /**
- * _movetonextline - move to the next line list 
+ * _movetonextline - move to the next line list
  *
  * @list_s: list of custom
  * @list_l: line cmd list custom
@@ -197,7 +197,7 @@ char **_tokenizeline(char *input)
 		if (i == token_size)
 		{
 			token_size += 128;
-			tokens = _memallocatedouble(tokens, i, sizeof(char *) * token_size);
+			tokens = _memalld(tokens, i, sizeof(char *) * token_size);
 			if (tokens == NULL)
 			{
 				write(STDERR_FILENO, ": allocation error\n", 18);

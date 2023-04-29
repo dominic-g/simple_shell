@@ -28,7 +28,7 @@ void set_env(char *alias, char *a_value, custom_struct *d_st)
 		free(var_env);
 	}
 
-	d_st->_environ = _memallocatedouble(d_st->_environ, i, sizeof(char *) * (i + 2));
+	d_st->_environ = _memalld(d_st->_environ, i, sizeof(char *) * (i + 2));
 	d_st->_environ[i] = copy_info(alias, a_value);
 	d_st->_environ[i + 1] = NULL;
 }

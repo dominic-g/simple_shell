@@ -17,40 +17,40 @@ extern char **environ;
 
 typedef struct data
 {
-	char **av;
-	char *input;
-	char **args;
-	int status;
-	int counter;
-	char **_environ;
-	char *pid;
+char **av;
+char *input;
+char **args;
+int status;
+int counter;
+char **_environ;
+char *pid;
 } custom_struct;
 
 
 typedef struct sep_list_s
 {
-    char separator;
-    struct sep_list_s *next;
+char separator;
+struct sep_list_s *next;
 } custom_sep_ls;
 
 typedef struct line_list_s
 {
-    char *line;
-    struct line_list_s *next;
+char *line;
+struct line_list_s *next;
 } custom_line_ls;
 
 typedef struct r_var_list
 {
-    int len_var;
-    char *val;
-    int len_val;
-    struct r_var_list *next;
+int len_var;
+char *val;
+int len_val;
+struct r_var_list *next;
 } line_var;
 
 typedef struct checking
 {
-	char *name;
-	int (*f)(custom_struct *datash);
+char *name;
+int (*f)(custom_struct *datash);
 } custom_inbuilt;
 
 /* lists.c */
@@ -77,8 +77,8 @@ char *_strcpy(char *dest, char *src);
 
 /* memory */
 void _custommemorycopy(void *newptr, const void *ptr, unsigned int size);
-void *_memallocate(void *ptr, unsigned int old_size, unsigned int new_size);
-char **_memallocatedouble(char **ptr, unsigned int old_size, unsigned int new_size);
+void *_memallocate(void *ptr, unsigned int o, unsigned int n);
+char **_memalld(char **ptr, unsigned int o, unsigned int n);
 
 
 int _dup_char(char *input, int i);

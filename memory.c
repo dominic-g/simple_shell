@@ -14,10 +14,11 @@ void _custommemorycopy(void *newptr, const void *ptr, unsigned int size)
 	char *c_n_r = (char *)newptr;
 	unsigned int i;
 
-	while (i < size) {
-        c_n_r[i] = c_r[i];
-        i++;
-    }
+	while (i < size)
+	{
+		c_n_r[i] = c_r[i];
+		i++;
+	}
 }
 
 /**
@@ -58,32 +59,32 @@ void *_memallocate(void *ptr, unsigned int bytend, unsigned int bytcur)
 }
 
 /**
- * _memallocatedouble - change the memory block of double pointer.
+ * _memalld - change the memory block of double pointer.
  * @ptr: old pointer to memory.
  * @bytend: bytes of allocated mem.
  * @bytcur: bytes to the new mem.
  *
  * Return: pointer of the ptr
  */
-char **_memallocatedouble(char **ptr, unsigned int bytend, unsigned int bytcur)
+char **_memalld(char **ptr, unsigned int bytend, unsigned int bytcur)
 {
-	char **newptr;
-	unsigned int i;
+char **newptr;
+unsigned int i;
 
-	if (ptr == NULL)
-		return (malloc(sizeof(char *) * bytcur));
+if (ptr == NULL)
+return (malloc(sizeof(char *) * bytcur));
 
-	if (bytcur == bytend)
-		return (ptr);
+if (bytcur == bytend)
+return (ptr);
 
-	newptr = malloc(sizeof(char *) * bytcur);
-	if (newptr == NULL)
-		return (NULL);
+newptr = malloc(sizeof(char *) * bytcur);
+if (newptr == NULL)
+return (NULL);
 
-	for (i = 0; i < bytend; i++)
-		newptr[i] = ptr[i];
+for (i = 0; i < bytend; i++)
+newptr[i] = ptr[i];
 
-	free(ptr);
+free(ptr);
 
-	return (newptr);
+return (newptr);
 }

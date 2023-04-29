@@ -28,22 +28,22 @@ char *_strcpy(char *dest, char *src)
  */
 int _isdigit(const char *s)
 {
-	unsigned int i;
+unsigned int i;
 
-	i = 0;
-    while (s[i] != '\0')
-    {
-        if (!(s[i] >= '0' && s[i] <= '9'))
-        {
-            return 0;
-        }
-        i++;
-    }
-    return (1);
+i = 0;
+while (s[i] != '\0')
+{
+if (!(s[i] >= '0' && s[i] <= '9'))
+{
+return (0);
+}
+i++;
+}
+return (1);
 }
 /**
  * _strdup - returns a pointer to a newly allocated space in memory.
- * @s: String to copy
+ * @str: String to copy
  * Return: returns a pointer to a newly allocated space in memory
  */
 char *_strdup(const char *str)
