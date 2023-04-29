@@ -14,69 +14,43 @@
 
 
 extern char **environ;
-/**
- * struct data - just declaring
- * @av: in struct data
- * @input: same above
- * @args: same above
- * @status: same above
- * @counter: same above
- * @_environ: same above
- * @pid: same above
- */
+
 typedef struct data
 {
-char **av;
-char *input;
-char **args;
-int status;
-int counter;
-char **_environ;
-char *pid;
+	char **av;
+	char *input;
+	char **args;
+	int status;
+	int counter;
+	char **_environ;
+	char *pid;
 } custom_struct;
-/**
- * struct sep_list_s - just declaring
- * @separator: in struct data
- * @next: same above
- */
+
+
 typedef struct sep_list_s
 {
-char separator;
-struct sep_list_s *next;
+    char separator;
+    struct sep_list_s *next;
 } custom_sep_ls;
-/**
- * struct line_list_s - just declaring
- * @line: in struct data
- * @next: same above
- */
+
 typedef struct line_list_s
 {
-char *line;
-struct line_list_s *next;
+    char *line;
+    struct line_list_s *next;
 } custom_line_ls;
-/**
- * struct r_var_list - just declaring
- * @len_var: in struct data
- * @val: same above
- * @len_val: same above
- * @next: same too
- */
+
 typedef struct r_var_list
 {
-int len_var;
-char *val;
-int len_val;
-struct r_var_list *next;
+    int len_var;
+    char *val;
+    int len_val;
+    struct r_var_list *next;
 } line_var;
-/**
- * struct checking - just declaring
- * @name: in struct data
- * @f: same above
- */
+
 typedef struct checking
 {
-char *name;
-int (*f)(custom_struct *datash);
+	char *name;
+	int (*f)(custom_struct *datash);
 } custom_inbuilt;
 
 /* lists.c */
@@ -103,10 +77,8 @@ char *_strcpy(char *dest, char *src);
 
 /* memory */
 void _custommemorycopy(void *newptr, const void *ptr, unsigned int size);
-void *_memallocate(void *ptr, unsigned int old_size,
-unsigned int new_size);
-char **_memallocatedouble(char **ptr, unsigned int old_size,
-unsigned int new_size);
+void *_memallocate(void *ptr, unsigned int old_size, unsigned int new_size);
+char **_memallocatedouble(char **ptr, unsigned int old_size, unsigned int new_size);
 
 
 int _dup_char(char *input, int i);
@@ -129,10 +101,8 @@ ssize_t _readline(char **lineptr, size_t *n, FILE *stream);
 
 /* split.c */
 char *_interchangechar(char *input, int bool);
-void _addseparator(custom_sep_ls **head_s,
-custom_line_ls **head_l, char *input);
-void _movetonextline(custom_sep_ls **list_s, custom_line_ls **list_l,
-custom_struct *datash);
+void _addseparator(custom_sep_ls **head_s, custom_line_ls **head_l, char *input);
+void _movetonextline(custom_sep_ls **list_s, custom_line_ls **list_l, custom_struct *datash);
 int _cutthecommands(custom_struct *datash, char *input);
 char **_tokenizeline(char *input);
 
@@ -164,10 +134,10 @@ int _setenv(custom_struct *datash);
 int _unsetenv(custom_struct *datash);
 
 /* cd.c */
-void change_directory_dot(custom_struct *data);
-void change_directory_to(custom_struct *data);
-void change_directory_to_previous(custom_struct *data);
-void home_dir(custom_struct *data);
+void change_dir_dot(custom_struct *datash);
+void change_dir_to(custom_struct *datash);
+void change_dir_to_previous(custom_struct *datash);
+void home_directory(custom_struct *datash);
 
 /* cd_shell.c */
 int cd_shell(custom_struct *datash);
@@ -190,38 +160,27 @@ char *error_not_found(custom_struct *datash);
 char *error_exit_shell(custom_struct *datash);
 char *error_get_alias(char **args);
 char *error_env(custom_struct *datash);
-char *error_env_message(custom_struct *ss_data);
 char *error_syntax(char **args);
 char *error_permission(char **args);
 char *error_path_126(custom_struct *datash);
-char *error_path_126_message(custom_struct *ss_data);
 
 /* get_error.c */
 int get_error(custom_struct *datash, int eval);
-int get_error_builtin(custom_struct *data_st, int error_val);
-
-/*err1.c file*/
-char *strcat_cd_message(custom_struct *ss_data,
-char *msg, char *error, char *ss_str);
-char *error_get_cd_message(custom_struct *ss_data);
-char *error_not_found_message(custom_struct *ss_data);
-char *error_exit_shell_message(custom_struct *ss_data);
 
 /* get_sigint.c */
 void get_sigint(int sig);
 
 /* _help.c */
-void help_env_info(void);
-void help_setenv_info(void);
-void help_unsetenv_info(void);
-void general_help_info(void);
-void help_exit_info(void);
-void help_info(void);
-void help_alias_info(void);
-void help_cd_info(void);
+void help_env(void);
+void help_setenv(void);
+void help_unsetenv(void);
+void general_help(void);
+void help_exit(void);
+void help(void);
+void help_alias(void);
+void help_cd(void);
 
 /* get_help.c */
 int get_help(custom_struct *datash);
-int get_help_message(custom_struct *data_st);
 
 #endif

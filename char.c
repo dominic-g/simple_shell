@@ -52,8 +52,7 @@ char *_interchangechar(char *input, int bool)
  * @input_str: string to check
  * Return: void
  */
-void _addseparator(custom_sep_ls **hd_sep,
-custom_line_ls **hd_line, char *input_str)
+void _addseparator(custom_sep_ls **hd_sep, custom_line_ls **hd_line, char *input_str)
 {
 	int i;
 	char *line;
@@ -82,15 +81,14 @@ custom_line_ls **hd_line, char *input_str)
 }
 
 /**
- * _movetonextline - move to the next line list
+ * _movetonextline - move to the next line list 
  *
  * @list_s: list of custom
  * @list_l: line cmd list custom
  * @datash: the struct data
  * Return: void
  */
-void _movetonextline(custom_sep_ls **list_s,
-custom_line_ls **list_l, custom_struct *datash)
+void _movetonextline(custom_sep_ls **list_s, custom_line_ls **list_l, custom_struct *datash)
 {
 	int loop_sep;
 	custom_sep_ls *ls_s;

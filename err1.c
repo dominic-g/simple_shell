@@ -1,12 +1,11 @@
 #include "shell.h"
 /**
- * get_error_builtin - calls the error according
- * the builtin, syntax or permission
+ * get_error - calls the error according the builtin, syntax or permission
  * @data_st: data structure that contains arguments
  * @error_val: error value
  * Return: error
  */
-int get_error_builtin(custom_struct *data_st, int error_val)
+int get_error(custom_struct *data_st, int error_val)
 {
 	char *error;
 
@@ -39,17 +38,15 @@ int get_error_builtin(custom_struct *data_st, int error_val)
 	return (error_val);
 }
 /**
- * strcat_cd_message - function that concatenates the message for cd errors
+ * strcat_cd - function that concatenates the message for cd error
  *
- * @ss_data: data's relevant (directory)
- * @msg: messages to print
- * @error: output messages
+ * @ss_data: data relevant (directory)
+ * @msg: message to print
+ * @error: output message
  * @ss_str: counter lines
- *
- * Return: error message(S)
+ * Return: error message
  */
-char *strcat_cd_message(custom_struct *ss_data,
-char *msg, char *error, char *ss_str)
+char *strcat_cd(custom_struct *ss_data, char *msg, char *error, char *ss_str)
 {
 	char *illegal_flag;
 
@@ -79,11 +76,11 @@ char *msg, char *error, char *ss_str)
 }
 
 /**
- * error_get_cd_message - error message(s) for cd command(s) in get_cd function
+ * error_get_cd - error message for cd command in get_cd
  * @ss_data: data relevant (directory)
  * Return: Error message
  */
-char *error_get_cd_message(custom_struct *ss_data)
+char *error_get_cd(custom_struct *ss_data)
 {
 	int length, len_id;
 	char *error, *ss_str, *msg;
@@ -118,11 +115,11 @@ char *error_get_cd_message(custom_struct *ss_data)
 }
 
 /**
- * error_not_found_message - generic error message(s) for command not found
+ * error_not_found - generic error message for command not found
  * @ss_data: data relevant (counter, arguments)
  * Return: Error message
  */
-char *error_not_found_message(custom_struct *ss_data)
+char *error_not_found(custom_struct *ss_data)
 {
 	int length;
 	char *error;
@@ -150,12 +147,12 @@ char *error_not_found_message(custom_struct *ss_data)
 }
 
 /**
- * error_exit_shell_message - generic error message for exit in get_exit
+ * error_exit_shell - generic error message for exit in get_exit
  * @ss_data: data relevant (counter, arguments)
  *
  * Return: Error message
  */
-char *error_exit_shell_message(custom_struct *ss_data)
+char *error_exit_shell(custom_struct *ss_data)
 {
 	int length;
 	char *error;

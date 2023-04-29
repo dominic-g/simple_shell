@@ -1,11 +1,11 @@
 #include "shell.h"
 
 /**
- * get_help_message - retrieves help messages according builtin
+ * get_help - retrieves help messages according builtin
  * @data_st: data structure (args and input)
  * Return: Return 0
 */
-int get_help_message(custom_struct *data_st)
+int get_help(custom_struct *data_st)
 {
 
 	if (data_st->args[1] == 0)
@@ -32,10 +32,10 @@ int get_help_message(custom_struct *data_st)
 	return (1);
 }
 /**
- * help_env_info - Help information for the builtin env
+ * help_env - Help information for the builtin env
  * Return: no return
  */
-void help_env_info(void)
+void help_env(void)
 {
 	char *help = "env: env [option] [name=value] [command [args]]\n\t";
 
@@ -46,10 +46,10 @@ void help_env_info(void)
 }
 
 /**
- * help_setenv_info - Help information for the builtin setenv
+ * help_setenv - Help information for the builtin setenv
  * Return: no return
  */
-void help_setenv_info(void)
+void help_setenv(void)
 {
 
 	char *help = "setenv: setenv (const char *name, const char *value,";
@@ -61,10 +61,10 @@ void help_setenv_info(void)
 	write(STDOUT_FILENO, help, _strlen(help));
 }
 /**
- * help_unsetenv_info - Help information for the builtin unsetenv
+ * help_unsetenv - Help information for the builtin unsetenv
  * Return: no return
  */
-void help_unsetenv_info(void)
+void help_unsetenv(void)
 {
 	char *help = "unsetenv: unsetenv (const char *name)\n\t";
 
@@ -75,10 +75,10 @@ void help_unsetenv_info(void)
 
 
 /**
- * general_help_info - Entry point for help information for the help builtin
+ * general_help - Entry point for help information for the help builtin
  * Return: no return
  */
-void general_help_info(void)
+void general_help(void)
 {
 	char *help = "^-^ bash, version 1.0(1)-release\n";
 

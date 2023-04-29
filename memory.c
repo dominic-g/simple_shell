@@ -10,15 +10,14 @@
  */
 void _custommemorycopy(void *newptr, const void *ptr, unsigned int size)
 {
-char *c_r = (char *)ptr;
-char *c_n_r = (char *)newptr;
-unsigned int i;
+	char *c_r = (char *)ptr;
+	char *c_n_r = (char *)newptr;
+	unsigned int i;
 
-while (i < size)
-{
-c_n_r[i] = c_r[i];
-i++;
-}
+	while (i < size) {
+        c_n_r[i] = c_r[i];
+        i++;
+    }
 }
 
 /**
