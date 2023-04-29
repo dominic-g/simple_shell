@@ -14,7 +14,16 @@
 
 
 extern char **environ;
-
+/**
+ * struct data - just declaring
+ * @av: in struct data
+ * @input: same above
+ * @args: same above
+ * @status: same above
+ * @counter: same above
+ * @_environ: same above
+ * @pid: same above
+ */
 typedef struct data
 {
 char **av;
@@ -25,20 +34,33 @@ int counter;
 char **_environ;
 char *pid;
 } custom_struct;
-
-
+/**
+ * struct sep_list_s - just declaring
+ * @separator: in struct data
+ * @next: same above
+ */
 typedef struct sep_list_s
 {
 char separator;
 struct sep_list_s *next;
 } custom_sep_ls;
-
+/**
+ * struct line_list_s - just declaring
+ * @line: in struct data
+ * @next: same above
+ */
 typedef struct line_list_s
 {
 char *line;
 struct line_list_s *next;
 } custom_line_ls;
-
+/**
+ * struct r_var_list - just declaring
+ * @len_var: in struct data
+ * @val: same above
+ * @len_val: same above
+ * @next: same too
+ */
 typedef struct r_var_list
 {
 int len_var;
@@ -46,7 +68,11 @@ char *val;
 int len_val;
 struct r_var_list *next;
 } line_var;
-
+/**
+ * struct checking - just declaring
+ * @name: in struct data
+ * @f: same above
+ */
 typedef struct checking
 {
 char *name;
