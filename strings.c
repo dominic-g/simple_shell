@@ -8,16 +8,16 @@
  */
 char *_strcpy(char *dest, char *src)
 {
-	int i;
+int i;
 
-	i = 0;
-	while (*(src + i) != '\0')
-	{
-		*(dest + i) = *(src + i);
-		i++;
-	}
-	*(dest + i) = '\0';
-	return (dest);
+i = 0;
+while (*(src + i) != '\0')
+{
+*(dest + i) = *(src + i);
+i++;
+}
+*(dest + i) = '\0';
+return (dest);
 }
 
 /**
@@ -28,39 +28,39 @@ char *_strcpy(char *dest, char *src)
  */
 int _isdigit(const char *s)
 {
-	unsigned int i;
+unsigned int i;
 
-	i = 0;
-    while (s[i] != '\0')
-    {
-        if (!(s[i] >= '0' && s[i] <= '9'))
-        {
-            return 0;
-        }
-        i++;
-    }
-    return (1);
+i = 0;
+while (s[i] != '\0')
+{
+if (!(s[i] >= '0' && s[i] <= '9'))
+{
+return (0);
+}
+i++;
+}
+return (1);
 }
 /**
  * _strdup - returns a pointer to a newly allocated space in memory.
- * @s: String to copy
+ * @str: String to copy
  * Return: returns a pointer to a newly allocated space in memory
  */
 char *_strdup(const char *str)
 {
-	int i, len;
-	char *new_str;
+int i, len;
+char *new_str;
 
-	if (str == NULL)
-		return (NULL);
-	len = _strlen(str);
-	new_str = malloc(sizeof(char) * (len + 1));
-	if (new_str == NULL)
-		return (NULL);
-	for (i = 0; i < len; i++)
-		new_str[i] = str[i];
-	new_str[len] = '\0';
-	return (new_str);
+if (str == NULL)
+return (NULL);
+len = _strlen(str);
+new_str = malloc(sizeof(char) * (len + 1));
+if (new_str == NULL)
+return (NULL);
+for (i = 0; i < len; i++)
+new_str[i] = str[i];
+new_str[len] = '\0';
+return (new_str);
 }
 /**
  * _strcmp - Function to check and compare strings.
@@ -70,21 +70,21 @@ char *_strdup(const char *str)
  */
 int _strcmp(char *s1, char *s2)
 {
-	int i, dif;
+int i, dif;
 
-	i = 0;
-	while (s1[i] != '\0' || s2[i] != '\0')
-	{
-		if (s1[i] != s2[i])
-		{
-			dif = s1[i] - s2[i];
-			return (dif);
-		}
-		i++;
-	}
-	if (s1[i] == s2[i] && s1[i] == '\0')
-		dif = 0;
-	return (dif);
+i = 0;
+while (s1[i] != '\0' || s2[i] != '\0')
+{
+if (s1[i] != s2[i])
+{
+dif = s1[i] - s2[i];
+return (dif);
+}
+i++;
+}
+if (s1[i] == s2[i] && s1[i] == '\0')
+dif = 0;
+return (dif);
 }
 /**
  * _strlen - Returns the lenght of a string.
@@ -93,11 +93,11 @@ int _strcmp(char *s1, char *s2)
  */
 int _strlen(const char *s)
 {
-	int len;
+int len;
 
-	for (len = 0; s[len] != 0; len++)
-	{
-	}
-	return (len);
+for (len = 0; s[len] != 0; len++)
+{
+}
+return (len);
 }
 

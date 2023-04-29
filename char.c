@@ -81,7 +81,7 @@ void _addseparator(custom_sep_ls **hd_sep, custom_line_ls **hd_line, char *input
 }
 
 /**
- * _movetonextline - move to the next line list 
+ * _movetonextline - move to the next line list
  *
  * @list_s: list of custom
  * @list_l: line cmd list custom

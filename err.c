@@ -1,11 +1,11 @@
 #include "shell.h"
 
 /**
- * error_env - error message for env in get_env.
+ * error_env_message - error message for env in get_env.
  * @ss_data: data relevant (counter, arguments)
  * Return: error message.
  */
-char *error_env(custom_struct *ss_data)
+char *error_env_message(custom_struct *ss_data)
 {
 	int length;
 	char *error;
@@ -36,12 +36,12 @@ char *error_env(custom_struct *ss_data)
 	return (error);
 }
 /**
- * error_path_126 - error message for path and failure denied permission.
+ * error_path_126_message - error message for path and failure denied permission.
  * @ss_data: data relevant (counter, arguments).
  *
  * Return: The error string.
  */
-char *error_path_126(custom_struct *ss_data)
+char *error_path_126_message(custom_struct *ss_data)
 {
 	int length;
 	char *mk_str;

@@ -134,10 +134,10 @@ int _setenv(custom_struct *datash);
 int _unsetenv(custom_struct *datash);
 
 /* cd.c */
-void change_dir_dot(custom_struct *datash);
-void change_dir_to(custom_struct *datash);
-void change_dir_to_previous(custom_struct *datash);
-void home_directory(custom_struct *datash);
+void change_directory_dot(custom_struct *data);
+void change_directory_to(custom_struct *data);
+void change_directory_to_previous(custom_struct *data);
+void home_dir(custom_struct *data);
 
 /* cd_shell.c */
 int cd_shell(custom_struct *datash);
@@ -160,27 +160,37 @@ char *error_not_found(custom_struct *datash);
 char *error_exit_shell(custom_struct *datash);
 char *error_get_alias(char **args);
 char *error_env(custom_struct *datash);
+char *error_env_message(custom_struct *ss_data);
 char *error_syntax(char **args);
 char *error_permission(char **args);
 char *error_path_126(custom_struct *datash);
+char *error_path_126_message(custom_struct *ss_data);
 
 /* get_error.c */
 int get_error(custom_struct *datash, int eval);
+int get_error_builtin(custom_struct *data_st, int error_val);
+
+/*err1.c file*/
+char *strcat_cd_message(custom_struct *ss_data, char *msg, char *error, char *ss_str);
+char *error_get_cd_message(custom_struct *ss_data);
+char *error_not_found_message(custom_struct *ss_data);
+char *error_exit_shell_message(custom_struct *ss_data);
 
 /* get_sigint.c */
 void get_sigint(int sig);
 
 /* _help.c */
-void help_env(void);
-void help_setenv(void);
-void help_unsetenv(void);
-void general_help(void);
-void help_exit(void);
-void help(void);
-void help_alias(void);
-void help_cd(void);
+void help_env_info(void);
+void help_setenv_info(void);
+void help_unsetenv_info(void);
+void general_help_info(void);
+void help_exit_info(void);
+void help_info(void);
+void help_alias_info(void);
+void help_cd_info(void);
 
 /* get_help.c */
 int get_help(custom_struct *datash);
+int get_help_message (custom_struct *data_st);
 
 #endif

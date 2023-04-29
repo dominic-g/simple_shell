@@ -22,34 +22,34 @@ int cd_shell(custom_struct *dss)
 
 	if (dir == NULL || !ishome || !ishome2 || !isddash)
 	{
-		home_directory(dss);
+		home_dir(dss);
 		return (1);
 	}
 
 	if (_strcmp("-", dir) == 0)
 	{
-		change_dir_to_previous(dss);
+		change_directory_to_previous(dss);
 		return (1);
 	}
 
 	if (_strcmp(".", dir) == 0 || _strcmp("..", dir) == 0)
 	{
-		change_dir_dot(dss);
+		change_directory_dot(dss);
 		return (1);
 	}
 
-	change_dir_to(dss);
+	change_directory_to(dss);
 
 	return (1);
 }
 /**
- * change_dir_dot - changes to the parent directory
+ * change_directory_dot - changes to the parent directory
  *
  * @data: data relevant (environ)
  *
  * Return: no return
  */
-void change_dir_dot(custom_struct *data)
+void change_directory_dot(custom_struct *data)
 {
 	char pwd[PATH_MAX];
 	char *dir, *cp_pwd, *cp_strtok_pwd;
@@ -94,13 +94,13 @@ void change_dir_dot(custom_struct *data)
 }
 
 /**
- * change_dir_to - changes to a directory given
+ * change_directory_to - changes to a directory given
  * by the user
  *
  * @data: data relevant (directories)
  * Return: no return
  */
-void change_dir_to(custom_struct *data)
+void change_directory_to(custom_struct *data)
 {
 	char pwd[PATH_MAX];
 	char *dir, *cp_pwd, *cp_dir;
@@ -129,12 +129,12 @@ void change_dir_to(custom_struct *data)
 }
 
 /**
- * change_dir_to_previous - changes to the previous directory
+ * change_directory_to_previous - changes to the previous directory
  *
  * @data: data relevant (environ)
  * Return: no return
  */
-void change_dir_to_previous(custom_struct *data)
+void change_directory_to_previous(custom_struct *data)
 {
 	char pwd[PATH_MAX];
 	char *p_pwd, *p_oldpwd, *cp_pwd, *cp_oldpwd;
@@ -171,12 +171,12 @@ void change_dir_to_previous(custom_struct *data)
 }
 
 /**
- * home_directory - changes to home directory
+ * home_dir - changes to home directory
  *
  * @data: data relevant (environ)
  * Return: no return
  */
-void home_directory(custom_struct *data)
+void home_dir(custom_struct *data)
 {
 	char *p_pwd, *home;
 	char pwd[PATH_MAX];

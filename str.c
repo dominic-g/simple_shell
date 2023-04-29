@@ -48,7 +48,7 @@ int _strspn(char *s, char *acc)
 /**
  * cmp_chars - compare chars of strings
  * @str: input string.
- * @delim: delimiter.
+ * @del: delimiter.
  *
  * Return: 1 if are equals, 0 if not.
  */
@@ -80,24 +80,27 @@ int cmp_chars(char str[], const char *del)
  */
 void rev_string(char *s)
 {
-	int len, i;
-	len = 0;
-    while (s[len] != '\0')
-    {
-        len++;
-    }
-    for (i = 0; i < len / 2; i++)
-    {
-        char temp = s[i];
-        s[i] = s[len - i - 1];
-        s[len - i - 1] = temp;
-    }
+int len, i;
+len = 0;
+
+while (s[len] != '\0')
+{
+len++;
+}
+for (i = 0; i < len / 2; i++)
+{
+char temp = s[i];
+
+s[i] = s[len - i - 1];
+s[len - i - 1] = temp;
+
+}
 }
 
 
 /**
  * _strchr - Function to locates char in a string,
- * @s: the haystack.
+ * @str: the haystack.
  * @c: the needle char.
  * Return: pointer to found character.
  */

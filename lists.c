@@ -27,34 +27,34 @@ void _freeseparatorls(custom_sep_ls **hed_list)
  * _asneend - adds a separator found at the end
  * of a custom_sep_ls.
  * @hed_list: head of the linked list.
- * @sep: separator found (; | &).
+ * @separator: separator found (; | &).
  * Return: address of the head.
  */
 custom_sep_ls *_asneend(custom_sep_ls **hed_list, char separator)
 {
-	custom_sep_ls *new_node; 
-    custom_sep_ls *tmp;
+custom_sep_ls *new_node;
+custom_sep_ls *tmp;
 
-	new_node = malloc(sizeof(custom_sep_ls));
-	if (new_node == NULL)
-		return (NULL);
+new_node = malloc(sizeof(custom_sep_ls));
+if (new_node == NULL)
+return (NULL);
 
-	new_node->separator = separator;
-	new_node->next = NULL;
-	tmp = *hed_list;
+new_node->separator = separator;
+new_node->next = NULL;
+tmp = *hed_list;
 
-	if (tmp == NULL)
-	{
-		*hed_list = new_node;
-	}
-	else
-	{
-		while (tmp->next != NULL)
-			tmp = tmp->next;
-		tmp->next = new_node;
-	}
+if (tmp == NULL)
+{
+*hed_list = new_node;
+}
+else
+{
+while (tmp->next != NULL)
+tmp = tmp->next;
+tmp->next = new_node;
+}
 
-	return (*hed_list);
+return (*hed_list);
 }
 
 /**
