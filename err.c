@@ -36,7 +36,8 @@ char *error_env_message(custom_struct *ss_data)
 	return (error);
 }
 /**
- * error_path_126_message - error message for path and failure denied permission.
+ * error_path_126_message - error message for
+ * path and failure denied permission.
  * @ss_data: data relevant (counter, arguments).
  *
  * Return: The error string.

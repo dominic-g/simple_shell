@@ -17,40 +17,40 @@ extern char **environ;
 
 typedef struct data
 {
-	char **av;
-	char *input;
-	char **args;
-	int status;
-	int counter;
-	char **_environ;
-	char *pid;
+char **av;
+char *input;
+char **args;
+int status;
+int counter;
+char **_environ;
+char *pid;
 } custom_struct;
 
 
 typedef struct sep_list_s
 {
-    char separator;
-    struct sep_list_s *next;
+char separator;
+struct sep_list_s *next;
 } custom_sep_ls;
 
 typedef struct line_list_s
 {
-    char *line;
-    struct line_list_s *next;
+char *line;
+struct line_list_s *next;
 } custom_line_ls;
 
 typedef struct r_var_list
 {
-    int len_var;
-    char *val;
-    int len_val;
-    struct r_var_list *next;
+int len_var;
+char *val;
+int len_val;
+struct r_var_list *next;
 } line_var;
 
 typedef struct checking
 {
-	char *name;
-	int (*f)(custom_struct *datash);
+char *name;
+int (*f)(custom_struct *datash);
 } custom_inbuilt;
 
 /* lists.c */
@@ -77,8 +77,10 @@ char *_strcpy(char *dest, char *src);
 
 /* memory */
 void _custommemorycopy(void *newptr, const void *ptr, unsigned int size);
-void *_memallocate(void *ptr, unsigned int old_size, unsigned int new_size);
-char **_memallocatedouble(char **ptr, unsigned int old_size, unsigned int new_size);
+void *_memallocate(void *ptr, unsigned int old_size,
+unsigned int new_size);
+char **_memallocatedouble(char **ptr, unsigned int old_size,
+unsigned int new_size);
 
 
 int _dup_char(char *input, int i);
@@ -101,8 +103,10 @@ ssize_t _readline(char **lineptr, size_t *n, FILE *stream);
 
 /* split.c */
 char *_interchangechar(char *input, int bool);
-void _addseparator(custom_sep_ls **head_s, custom_line_ls **head_l, char *input);
-void _movetonextline(custom_sep_ls **list_s, custom_line_ls **list_l, custom_struct *datash);
+void _addseparator(custom_sep_ls **head_s,
+custom_line_ls **head_l, char *input);
+void _movetonextline(custom_sep_ls **list_s, custom_line_ls **list_l,
+custom_struct *datash);
 int _cutthecommands(custom_struct *datash, char *input);
 char **_tokenizeline(char *input);
 
@@ -171,7 +175,8 @@ int get_error(custom_struct *datash, int eval);
 int get_error_builtin(custom_struct *data_st, int error_val);
 
 /*err1.c file*/
-char *strcat_cd_message(custom_struct *ss_data, char *msg, char *error, char *ss_str);
+char *strcat_cd_message(custom_struct *ss_data,
+char *msg, char *error, char *ss_str);
 char *error_get_cd_message(custom_struct *ss_data);
 char *error_not_found_message(custom_struct *ss_data);
 char *error_exit_shell_message(custom_struct *ss_data);
@@ -191,6 +196,6 @@ void help_cd_info(void);
 
 /* get_help.c */
 int get_help(custom_struct *datash);
-int get_help_message (custom_struct *data_st);
+int get_help_message(custom_struct *data_st);
 
 #endif

@@ -1,6 +1,7 @@
 #include "shell.h"
 /**
- * get_error_bultin - calls the error according the builtin, syntax or permission
+ * get_error_builtin - calls the error according
+ * the builtin, syntax or permission
  * @data_st: data structure that contains arguments
  * @error_val: error value
  * Return: error
@@ -47,7 +48,8 @@ int get_error_builtin(custom_struct *data_st, int error_val)
  *
  * Return: error message(S)
  */
-char *strcat_cd_message(custom_struct *ss_data, char *msg, char *error, char *ss_str)
+char *strcat_cd_message(custom_struct *ss_data,
+char *msg, char *error, char *ss_str)
 {
 	char *illegal_flag;
 
